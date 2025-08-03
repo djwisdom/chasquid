@@ -247,7 +247,11 @@ func signalHandler(dinfo *domaininfo.DB, srv *smtpsrv.Server) {
 			// Also trigger a server reload.
 			srv.Reload()
 		case syscall.SIGTERM, syscall.SIGINT:
-			log.Fatalf("Got signal to exit: %v", sig)
+			log.Infof("Got signal to exit: %v", sig)
+			// Ideally, we would shutdown the server gracefully, but for now
+			// we just exit. Note that in practice this is not a significant
+			// problem, as any in-flight transaction should be retried.
+			os.Exit(0)
 		default:
 			log.Errorf("Unexpected signal %v", sig)
 		}
