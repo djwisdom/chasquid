@@ -102,9 +102,7 @@ done >> /etc/dovecot/auto-ssl.conf
 sed -i '/^hostname:/d' /etc/chasquid/chasquid.conf
 echo "hostname: '$ONE_DOMAIN'" >> /etc/chasquid/chasquid.conf
 
-# Start the services: dovecot in background, chasquid in foreground.
-start-stop-daemon --start --quiet --pidfile /run/dovecot.pid \
-	--exec /usr/sbin/dovecot -- -c /etc/dovecot/dovecot.conf
-
-# shellcheck disable=SC2086
-sudo -u chasquid -g chasquid  /usr/bin/chasquid  $CHASQUID_FLAGS
+# Start the services (dovecot and chasquid, configured in supervisord.conf).
+# We exec, so supervisord becomes our init, and it forwards any signals we
+# receive from outside the container.
+exec supervisord --nodaemon -c /etc/supervisor/supervisord.conf

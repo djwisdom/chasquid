@@ -27,7 +27,8 @@ RUN DEBIAN_FRONTEND=noninteractive \
 		chasquid \
 		dovecot-lmtpd dovecot-imapd dovecot-pop3d \
 		dovecot-sieve dovecot-managesieved \
-		acl libcap2-bin sudo certbot && \
+		supervisor \
+		acl libcap2-bin certbot && \
 	apt-get autoremove --purge -y -q && \
 	apt-get autoclean -y -q && \
 	rm -rf /var/lib/apt/lists/*
@@ -42,6 +43,7 @@ RUN setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/chasquid
 # Copy docker-specific configurations.
 COPY docker/dovecot.conf /etc/dovecot/dovecot.conf
 COPY docker/chasquid.conf /etc/chasquid/chasquid.conf
+COPY docker/supervisord.conf /etc/supervisor/supervisord.conf
 
 # Copy utility scripts.
 COPY docker/add-user.sh docker/entrypoint.sh /
