@@ -17,12 +17,19 @@ RUN go get -d ./... && \
 # Create the image.
 FROM debian:stable-slim
 
+# Create the chasquid and dovecot users with fixed UID/GID.
 # Install the packages we need.
 # This includes chasquid, which sets up good defaults.
 # Make debconf/frontend non-interactive, to avoid distracting output about the
 # lack of $TERM.
-RUN DEBIAN_FRONTEND=noninteractive \
-	apt-get update -q && \
+RUN \
+	groupadd -g 101 chasquid && \
+	useradd -m -u 100 -g 101 -s /usr/sbin/nologin -d /var/lib/chasquid \
+		chasquid && \
+	groupadd -g 103 dovecot && \
+	useradd -m -u 101 -g 103 -s /usr/sbin/nologin -d /usr/lib/dovecot \
+		dovecot && \
+	DEBIAN_FRONTEND=noninteractive apt-get update -q && \
 	apt-get install -y -q \
 		chasquid \
 		dovecot-lmtpd dovecot-imapd dovecot-pop3d \
