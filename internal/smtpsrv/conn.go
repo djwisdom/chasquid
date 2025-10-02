@@ -747,11 +747,10 @@ func (c *Conn) addReceivedHeader() {
 		// explicitly hide their network address.
 		received += fmt.Sprintf("from %s\n", c.ehloDomain)
 	} else {
-		// For non-authenticated users we show the real address as canonical,
-		// and then the given EHLO domain for convenience and
-		// troubleshooting.
-		received += fmt.Sprintf("from [%s] (%s)\n",
-			addrLiteral(c.remoteAddr), c.ehloDomain)
+		// For non-authenticated users we also include the network address,
+		// for convenience and troubleshooting.
+		received += fmt.Sprintf("from %s ([%s])\n",
+			c.ehloDomain, addrLiteral(c.remoteAddr))
 	}
 
 	received += fmt.Sprintf("by %s (chasquid) ", c.hostname)
