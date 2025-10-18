@@ -53,8 +53,21 @@ function go-build-cached() { (
 		! cmp -s .flags-new .flags >/dev/null 2>&1 ||
 		[ "$(basename "$PWD")" -ot ".reference" ] ;
 	then
+		# Build to a temporary file first, then atomically rename it.
+		# This prevents "text file busy" errors when the binary is
+		# executed while being written to.
+		BINARY="$(basename "$PWD")"
+		TMPFILE=".${BINARY}.tmp.${RANDOM}"
+
 		# shellcheck disable=SC2086
-		go build -tags="$GOTAGS" $GOFLAGS
+		if go build -tags="$GOTAGS" $GOFLAGS -o "$TMPFILE"; then
+			# Atomically replace the binary.
+			mv "$TMPFILE" "$BINARY"
+		else
+			# Clean up the temp file if the build failed.
+			rm -f "$TMPFILE"
+			exit 1
+		fi
 
 		# Write to .flags instead of renaming, to prevent races where
 		# was .flags-new is already renamed by the time we get here.
