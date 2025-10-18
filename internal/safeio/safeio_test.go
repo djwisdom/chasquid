@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io/fs"
 	"os"
 	"strings"
 	"testing"
@@ -242,5 +243,32 @@ func checkNotExists(t *testing.T, fname string) {
 	t.Helper()
 	if _, err := os.Stat(fname); err == nil {
 		t.Fatalf("file %v exists", fname)
+	}
+}
+
+func TestFsyncFileOp(t *testing.T) {
+	// Check it as an operation on a normal file.
+	dir := testlib.MustTempDir(t)
+	defer testlib.RemoveIfOk(t, dir)
+
+	content := []byte("content 1")
+	err := testWriteFile("file1", content, 0660, FsyncFileOp)
+	if err != nil {
+		t.Error(err)
+	}
+
+	// Use a file that doesn't exist to trigger an Open error.
+	err = FsyncFileOp("doesnotexist")
+	if !errors.Is(err, fs.ErrNotExist) {
+		t.Errorf("expected an fs.ErrNotExist, got %#v", err)
+	}
+
+	// To trigger a Sync error, we use /dev/null, which is writable but cannot
+	// be synced. Confirm the error is a fs.PathError and comes from the sync
+	// operation, to make sure we're not accidentally failing on Open or
+	// Close.
+	err = FsyncFileOp("/dev/null")
+	if pe, ok := err.(*fs.PathError); !ok || pe.Op != "sync" {
+		t.Errorf("expected a fs.PathError from sync, got %#v", err)
 	}
 }

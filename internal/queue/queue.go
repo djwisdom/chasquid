@@ -25,6 +25,7 @@ import (
 	"blitiri.com.ar/go/chasquid/internal/expvarom"
 	"blitiri.com.ar/go/chasquid/internal/maillog"
 	"blitiri.com.ar/go/chasquid/internal/protoio"
+	"blitiri.com.ar/go/chasquid/internal/safeio"
 	"blitiri.com.ar/go/chasquid/internal/set"
 	"blitiri.com.ar/go/chasquid/internal/trace"
 	"blitiri.com.ar/go/log"
@@ -306,7 +307,10 @@ func (item *Item) WriteTo(dir string) error {
 
 	path := fmt.Sprintf("%s/%s%s", dir, itemFilePrefix, item.ID)
 
-	return protoio.WriteTextMessage(path, &item.Message, 0600)
+	// Write the file in text format for ease of debugging, and use fsync to
+	// improve durability.
+	return protoio.WriteTextMessage(
+		path, &item.Message, 0600, safeio.FsyncFileOp)
 }
 
 // SendLoop repeatedly attempts to send the item.

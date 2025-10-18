@@ -95,3 +95,21 @@ func getOwner(fname string) (uid, gid int) {
 
 	return
 }
+
+// FsyncFileOp returns a FileOp that fsyncs the given file.
+// It would be even better if we would do this on the open file, but
+// unfortunately we don't have the API for it just yet. This should be good
+// enough for most cases on modern filesystems anyway.
+func FsyncFileOp(fname string) error {
+	f, err := os.OpenFile(fname, os.O_RDWR, 0)
+	if err != nil {
+		return err
+	}
+
+	if err = f.Sync(); err != nil {
+		f.Close()
+		return err
+	}
+
+	return f.Close()
+}

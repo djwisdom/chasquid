@@ -33,13 +33,13 @@ func ReadTextMessage(fname string, pb proto.Message) error {
 }
 
 // WriteMessage marshals pb and atomically writes it into fname.
-func WriteMessage(fname string, pb proto.Message, perm os.FileMode) error {
+func WriteMessage(fname string, pb proto.Message, perm os.FileMode, ops ...safeio.FileOp) error {
 	out, err := proto.Marshal(pb)
 	if err != nil {
 		return err
 	}
 
-	return safeio.WriteFile(fname, out, perm)
+	return safeio.WriteFile(fname, out, perm, ops...)
 }
 
 var textOpts = prototext.MarshalOptions{
@@ -48,12 +48,12 @@ var textOpts = prototext.MarshalOptions{
 
 // WriteTextMessage marshals pb in text format and atomically writes it into
 // fname.
-func WriteTextMessage(fname string, pb proto.Message, perm os.FileMode) error {
+func WriteTextMessage(fname string, pb proto.Message, perm os.FileMode, ops ...safeio.FileOp) error {
 	out, err := textOpts.Marshal(pb)
 	if err != nil {
 		return err
 	}
-	return safeio.WriteFile(fname, out, perm)
+	return safeio.WriteFile(fname, out, perm, ops...)
 }
 
 ///////////////////////////////////////////////////////////////
