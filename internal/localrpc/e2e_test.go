@@ -22,10 +22,10 @@ func Hola(tr *trace.Trace, input url.Values) (url.Values, error) {
 	return output, nil
 }
 
-var testErr = errors.New("test error")
+var errTest = errors.New("test error")
 
 func HolaErr(tr *trace.Trace, input url.Values) (url.Values, error) {
-	return nil, testErr
+	return nil, errTest
 }
 
 type testServer struct {
@@ -86,7 +86,7 @@ func TestEndToEnd(t *testing.T) {
 		{"Echo", nil, mkV(), nil},
 		{"Echo", mkV("msg", "hola"), mkV("msg", "hola"), nil},
 		{"Hola", mkV("name", "marola"), mkV("greeting", "Hola marola"), nil},
-		{"HolaErr", nil, nil, testErr},
+		{"HolaErr", nil, nil, errTest},
 		{"UnknownMethod", nil, nil, errUnknownMethod},
 	}
 

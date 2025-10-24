@@ -56,11 +56,11 @@ func main() {
 		}
 
 		conn, err = tls.Dial("tcp", *addr, tlsConfig)
-		defer conn.Close()
 	} else {
 		conn, err = net.Dial("tcp", *addr)
 	}
 	notnil(err)
+	defer conn.Close()
 
 	// Send the message.
 	client, err := smtp.NewClient(conn, *addr)

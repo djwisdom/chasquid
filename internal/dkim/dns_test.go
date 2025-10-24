@@ -3,8 +3,6 @@ package dkim
 import (
 	"context"
 	"crypto"
-	"crypto/ed25519"
-	"crypto/x509"
 	"encoding/base64"
 	"errors"
 	"testing"
@@ -36,7 +34,6 @@ const exampleRSAKeyB64 = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQ" +
 	"tdY9tf6mcwGjaNBcWToIMmPSPDdQPNUYckcQ2QIDAQAB"
 
 var exampleRSAKeyBuf, _ = base64.StdEncoding.DecodeString(exampleRSAKeyB64)
-var exampleRSAKey, _ = x509.ParsePKCS1PublicKey(exampleRSAKeyBuf)
 
 // Ed25519 key from the RFC example.
 // https://datatracker.ietf.org/doc/html/rfc8463#appendix-A.2
@@ -44,7 +41,6 @@ const exampleEd25519KeyB64 = "11qYAYKxCrfVS/7TyWQHOg7hcvPapiMlrwIaaPcHURo="
 
 var exampleEd25519KeyBuf, _ = base64.StdEncoding.DecodeString(
 	exampleEd25519KeyB64)
-var exampleEd25519Key = ed25519.PublicKey(exampleEd25519KeyBuf)
 
 var results = map[string][]string{}
 var resultErr = map[string]error{}

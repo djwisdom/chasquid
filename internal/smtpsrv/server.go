@@ -282,7 +282,6 @@ func (s *Server) periodicallyReload() {
 		return
 	}
 
-	//lint:ignore SA1015 This lasts the program's lifetime.
 	for range time.Tick(*reloadEvery) {
 		s.Reload()
 	}

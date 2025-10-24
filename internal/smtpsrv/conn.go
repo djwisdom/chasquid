@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/tls"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -944,7 +945,7 @@ func (c *Conn) runPostDataHook(data []byte) ([]byte, bool, error) {
 
 		// The error contains the last line of stdout, so filters can pass
 		// some rejection information back to the sender.
-		err = fmt.Errorf(lastLine(string(out)))
+		err = errors.New(lastLine(string(out)))
 		return nil, permanent, err
 	}
 
