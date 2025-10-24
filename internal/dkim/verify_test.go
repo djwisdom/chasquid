@@ -26,7 +26,7 @@ func TestVerifyRF6376CExample(t *testing.T) {
 	// Use the public key from the example in RFC 6376 appendix C.
 	// https://datatracker.ietf.org/doc/html/rfc6376#appendix-C
 	ctx = WithLookupTXTFunc(ctx, makeLookupTXT(map[string][]string{
-		"brisbane._domainkey.example.com": []string{
+		"brisbane._domainkey.example.com": {
 			"v=DKIM1; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQ" +
 				"KBgQDwIRP/UC3SBsEmGqZ9ZJW3/DkMoGeLnQg1fWn7/zYt" +
 				"IxN2SnFCjxOCKG9v3b4jYfcTNh5ijSsq631uBItLa7od+v" +
@@ -94,11 +94,11 @@ func TestVerifyRFC8463Example(t *testing.T) {
 	// Use the public keys from the example in RFC 8463 appendix A.2.
 	// https://datatracker.ietf.org/doc/html/rfc6376#appendix-C
 	ctx = WithLookupTXTFunc(ctx, makeLookupTXT(map[string][]string{
-		"brisbane._domainkey.football.example.com": []string{
+		"brisbane._domainkey.football.example.com": {
 			"v=DKIM1; k=ed25519; " +
 				"p=11qYAYKxCrfVS/7TyWQHOg7hcvPapiMlrwIaaPcHURo="},
 
-		"test._domainkey.football.example.com": []string{
+		"test._domainkey.football.example.com": {
 			"v=DKIM1; k=rsa; " +
 				"p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDkHlOQoBTzWR" +
 				"iGs5V6NpP3idY6Wk08a5qhdR6wy5bdOKb2jLQiY/J16JYi0Qvx/b" +

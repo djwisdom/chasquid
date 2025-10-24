@@ -47,7 +47,7 @@ func TestSignRSA(t *testing.T) {
 	}
 
 	ctx = WithLookupTXTFunc(ctx, makeLookupTXT(map[string][]string{
-		"test._domainkey.example.com": []string{
+		"test._domainkey.example.com": {
 			"v=DKIM1; p=" + base64.StdEncoding.EncodeToString(pub),
 		},
 	}))
@@ -94,7 +94,7 @@ func TestSignEd25519(t *testing.T) {
 	}
 
 	ctx = WithLookupTXTFunc(ctx, makeLookupTXT(map[string][]string{
-		"test._domainkey.example.com": []string{
+		"test._domainkey.example.com": {
 			"v=DKIM1; k=ed25519; p=" + base64.StdEncoding.EncodeToString(pub),
 		},
 	}))
