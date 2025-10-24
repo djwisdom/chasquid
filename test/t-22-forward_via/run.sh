@@ -38,9 +38,11 @@ CONFDIR=external chasquid-util dkim-keygen --algo=ed25519 \
 # Launch minidns in the background using our configuration.
 # Augment the zones with the dkim ones.
 cp zones .zones
-CONFDIR=primary   chasquid-util dkim-dns dodo | sed 's/"//g' >> .zones
-CONFDIR=secondary chasquid-util dkim-dns dodo | sed 's/"//g' >> .zones
-CONFDIR=external  chasquid-util dkim-dns kiwi | sed 's/"//g' >> .zones
+{
+	CONFDIR=primary   chasquid-util dkim-dns dodo | sed 's/"//g'
+	CONFDIR=secondary chasquid-util dkim-dns dodo | sed 's/"//g'
+	CONFDIR=external  chasquid-util dkim-dns kiwi | sed 's/"//g'
+} >> .zones
 minidns_bg --addr=":9053" -zones=.zones >> .minidns.log 2>&1
 
 
