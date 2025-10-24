@@ -408,7 +408,7 @@ func TestTooMuchData(t *testing.T) {
 
 func simpleCmd(t *testing.T, c *smtp.Client, cmd string, expected int) string {
 	t.Helper()
-	if err := c.Text.PrintfLine(cmd); err != nil {
+	if err := c.Text.PrintfLine("%s", cmd); err != nil {
 		t.Fatalf("Failed to write %s: %v", cmd, err)
 	}
 

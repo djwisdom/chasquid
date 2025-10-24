@@ -97,8 +97,8 @@ func (l *Logger) Auth(netAddr net.Addr, user string, successful bool) {
 		res = "failed"
 	}
 	msg := fmt.Sprintf("%s auth %s for %s\n", netAddr, res, user)
-	l.printf(msg)
-	authLog.Debugf(msg)
+	l.printf("%s", msg)
+	authLog.Debugf("%s", msg)
 }
 
 // Rejected logs that we've rejected an email.

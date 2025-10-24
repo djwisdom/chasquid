@@ -57,7 +57,7 @@ func fuzzConnection(t *testing.T, modeI int, data []byte) {
 			continue
 		}
 
-		if err = tconn.PrintfLine(line); err != nil {
+		if err = tconn.PrintfLine("%s", line); err != nil {
 			break
 		}
 
@@ -82,7 +82,7 @@ func FuzzConnection(f *testing.F) {
 func exchangeData(scanner *bufio.Scanner, tconn *textproto.Conn) error {
 	for scanner.Scan() {
 		line := scanner.Text()
-		if err := tconn.PrintfLine(line); err != nil {
+		if err := tconn.PrintfLine("%s", line); err != nil {
 			return err
 		}
 		if line == "." {

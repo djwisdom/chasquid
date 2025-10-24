@@ -378,18 +378,18 @@ func (c *Conn) EHLO(params string) (code int, msg string) {
 	c.isESMTP = true
 
 	buf := bytes.NewBuffer(nil)
-	fmt.Fprintf(buf, c.hostname+" - Your hour of destiny has come.\n")
-	fmt.Fprintf(buf, "8BITMIME\n")
-	fmt.Fprintf(buf, "PIPELINING\n")
-	fmt.Fprintf(buf, "SMTPUTF8\n")
-	fmt.Fprintf(buf, "ENHANCEDSTATUSCODES\n")
+	fmt.Fprint(buf, c.hostname+" - Your hour of destiny has come.\n")
+	fmt.Fprint(buf, "8BITMIME\n")
+	fmt.Fprint(buf, "PIPELINING\n")
+	fmt.Fprint(buf, "SMTPUTF8\n")
+	fmt.Fprint(buf, "ENHANCEDSTATUSCODES\n")
 	fmt.Fprintf(buf, "SIZE %d\n", c.maxDataSize)
 	if c.onTLS {
-		fmt.Fprintf(buf, "AUTH PLAIN\n")
+		fmt.Fprint(buf, "AUTH PLAIN\n")
 	} else {
-		fmt.Fprintf(buf, "STARTTLS\n")
+		fmt.Fprint(buf, "STARTTLS\n")
 	}
-	fmt.Fprintf(buf, "HELP\n")
+	fmt.Fprint(buf, "HELP\n")
 	return 250, buf.String()
 }
 
