@@ -5,6 +5,14 @@ This file contains notes for each release, summarizing changes and explicitly
 noting backward-incompatible changes or known security issues.
 
 
+## 1.17.0 (2025-11-30)
+
+- Fix `Received` header format when including the IP address.
+- Call fsync when writing files to the queue.
+- Docker image improvements and bug fixes.
+- Minor fixes for systems without /bin.
+
+
 ## 1.16.0 (2025-06-08)
 
 - Minor bug fixes to `chasquid-util`.
