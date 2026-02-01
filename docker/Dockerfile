@@ -15,7 +15,10 @@ RUN go get -d ./... && \
 	go install ./...
 
 # Create the image.
-FROM debian:stable-slim
+# Use a specific Debian stable version, because the move between
+# different stable version may introduce some breaking changes, so we want to
+# do them in a controlled way.
+FROM debian:13-slim
 
 # Create the chasquid and dovecot users with fixed UID/GID.
 # Install the packages we need.
