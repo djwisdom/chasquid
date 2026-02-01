@@ -11,8 +11,7 @@
 FROM golang:latest AS build
 WORKDIR /go/src/blitiri.com.ar/go/chasquid
 COPY . .
-RUN go get -d ./... && \
-	go install ./...
+RUN go install ./...
 
 # Create the image.
 # Use a specific Debian stable version, because the move between
