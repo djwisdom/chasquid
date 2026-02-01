@@ -65,7 +65,8 @@ done
 ONE_DOMAIN=$D
 
 # Check that there's at least once certificate at this point.
-if [ "$CERT_DOMAINS" == "" ]; then
+# Use $SKIP_CERT_CHECK=1 to bypass this check for debugging purposes.
+if [ "$CERT_DOMAINS" == "" ] && [ "$SKIP_CERT_CHECK" != "1" ]; then
 	echo "No certificates found."
 	echo
 	echo "Set AUTO_CERTS='example.com' to automatically get one."
