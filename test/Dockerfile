@@ -27,7 +27,8 @@ RUN apt-get install -y -q \
 	gettext-base dovecot-imapd \
 	exim4-daemon-light \
 	haproxy \
-	python3-dkim
+	python3-dkim \
+	prometheus promtool
 
 # Install sudo, needed for the docker entrypoint.
 RUN apt-get install -y -q sudo

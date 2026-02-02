@@ -44,6 +44,8 @@ if the dependencies are not found:
     - `haproxy`
 - `t-19-dkimpy`: [dkimpy](https://pypi.org/project/dkimpy/) integration tests:
     - `python3-dkim`
+- `t-23-prometheus`: [Prometheus](https://prometheus.io/) integration tests:
+    - `prometheus promtool`
 
 For some tests, python >= 3.5 is required; they will be skipped if it's not
 available.
